@@ -2,7 +2,7 @@
 """Creates a pandas DataFrame from a NumPy array."""
 
 
-import pandas as pd
+
 
 def from_numpy(array):
     """Creates a DataFrame from a NumPy ndarray.
