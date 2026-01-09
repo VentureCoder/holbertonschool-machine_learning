@@ -2,9 +2,6 @@
 """Computes descriptive statistics for a DataFrame."""
 
 
-import pandas as pd
-
-
 def analyze(df):
     """Computes descriptive statistics excluding the Timestamp column.
 
