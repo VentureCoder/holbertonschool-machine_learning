@@ -2,6 +2,7 @@
 """Concatenates Bitstamp and Coinbase data with labeled keys."""
 
 
+import pandas as pd
 index = __import__('10-index').index
 
 
@@ -20,7 +21,6 @@ def concat(df1, df2):
 
     df2 = df2.loc[:1417411920]
 
-    pd = __import__('pandas')
     return pd.concat(
         [df2, df1],
         keys=["bitstamp", "coinbase"],
