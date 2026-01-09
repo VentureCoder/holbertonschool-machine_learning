@@ -2,9 +2,6 @@
 """Converts selected DataFrame values to a NumPy array."""
 
 
-import pandas as pd
-
-
 def array(df):
     """Selects the last 10 rows of High and Close columns as a NumPy array.
 
