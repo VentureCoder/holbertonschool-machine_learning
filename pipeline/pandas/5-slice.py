@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
-"""Slices specific columns and rows from a pandas DataFrame."""
-
-
-import pandas as pd
+"""Slices selected columns and rows from a DataFrame."""
 
 
 def slice(df):
-    """Extracts selected columns and every 60th row from a DataFrame.
+    """Extracts columns and selects every 60th row.
 
     Args:
         df (pandas.DataFrame): Input DataFrame.
