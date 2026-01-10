@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def frequency():
-    """Plots the distribution of student grades."""
+    """Plots the frequency of student grades."""
     np.random.seed(5)
     student_grades = np.random.normal(68, 15, 50)
 
@@ -16,6 +16,4 @@ def frequency():
     plt.xlabel("Grades")
     plt.ylabel("Number of Students")
     plt.title("Project A")
-    plt.xticks(range(0, 101, 10))
-    plt.xlim(0, 100)
     plt.show()
