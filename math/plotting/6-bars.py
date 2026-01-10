@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plots a stacked bar chart of fruit quantities per person."""
+"""Plots a stacked bar graph of fruit quantities per person."""
 
 
 import numpy as np
@@ -7,50 +7,52 @@ import matplotlib.pyplot as plt
 
 
 def bars():
-    """Plots a stacked bar graph."""
+    """Plots a stacked bar chart."""
     np.random.seed(5)
     fruit = np.random.randint(0, 20, (4, 3))
 
     people = ["Farrah", "Fred", "Felicia"]
-    x = np.arange(len(people))
+    x = np.arange(3)
 
     apples = fruit[0]
     bananas = fruit[1]
     oranges = fruit[2]
     peaches = fruit[3]
 
-    plt.figure(figsize=(6.4, 4.8))
+    fig, ax = plt.subplots(figsize=(6.4, 4.8))
 
-    plt.bar(x, apples, width=0.5, color="red", label="Apples")
-    plt.bar(
+    ax.bar(x, apples, width=0.5, color="red", label="apples")
+    ax.bar(
         x,
         bananas,
         width=0.5,
         bottom=apples,
         color="yellow",
-        label="Bananas",
+        label="bananas",
     )
-    plt.bar(
+    ax.bar(
         x,
         oranges,
         width=0.5,
         bottom=apples + bananas,
         color="#ff8000",
-        label="Oranges",
+        label="oranges",
     )
-    plt.bar(
+    ax.bar(
         x,
         peaches,
         width=0.5,
         bottom=apples + bananas + oranges,
         color="#ffe5b4",
-        label="Peaches",
+        label="peaches",
     )
 
-    plt.xticks(x, people)
-    plt.ylabel("Quantity of Fruit")
-    plt.ylim(0, 80)
-    plt.yticks(np.arange(0, 81, 10))
-    plt.title("Number of Fruit per Person")
-    plt.legend()
+    ax.set_xticks(x)
+    ax.set_xticklabels(people)
+    ax.set_ylabel("Quantity of Fruit")
+    ax.set_ylim(0, 80)
+    ax.set_yticks(list(range(0, 81, 10)))
+    ax.set_title("Number of Fruit per Person")
+    ax.legend(loc="upper right")
+
     plt.show()
