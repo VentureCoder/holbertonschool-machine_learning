@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Task 4: Frequency
+4-frequency.py
 Plots a histogram of student grades for Project A.
 """
 
