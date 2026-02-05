@@ -11,7 +11,9 @@ def definiteness(matrix):
     if not isinstance(matrix, np.ndarray):
         raise TypeError("matrix must be a numpy.ndarray")
 
-    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1] or matrix.size == 0:
+    if (matrix.ndim != 2 or
+            matrix.shape[0] != matrix.shape[1] or
+            matrix.size == 0):
         return None
 
     # Must be symmetric
