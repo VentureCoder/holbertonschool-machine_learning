@@ -28,15 +28,18 @@ class Poisson:
         """
         if not isinstance(k, int):
             k = int(k)
-
         if k < 0:
             return 0
 
-        e = 2.7182818284590452353602874713527
+        # High-precision e
+        e = 2.71828182845904523536028747135266249775724709369995
 
-        factorial = 1
+        # factorial
+        fact = 1
         for i in range(1, k + 1):
-            factorial *= i
+            fact *= i
 
-        return (e ** (-self.lambtha) *
-                (self.lambtha ** k) / factorial)
+        # compute e^(-lambtha)
+        exp_term = e ** (-self.lambtha)
+
+        return exp_term * (self.lambtha ** k) / fact
