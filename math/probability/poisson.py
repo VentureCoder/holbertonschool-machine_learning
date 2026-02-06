@@ -3,6 +3,8 @@
 Poisson distribution class
 """
 
+import math
+
 
 class Poisson:
     """Class representing a Poisson distribution"""
@@ -10,9 +12,6 @@ class Poisson:
     def __init__(self, data=None, lambtha=1.):
         """
         Initializes the Poisson distribution
-
-        data: list of values to estimate lambtha
-        lambtha: expected number of occurrences
         """
         if data is None:
             if lambtha <= 0:
@@ -28,9 +27,6 @@ class Poisson:
     def pmf(self, k):
         """
         Calculates the PMF value for k successes
-
-        k: number of successes
-        Returns: PMF value
         """
         if not isinstance(k, int):
             k = int(k)
@@ -38,9 +34,6 @@ class Poisson:
         if k < 0:
             return 0
 
-        factorial = 1
-        for i in range(1, k + 1):
-            factorial *= i
-
-        return (2.718281828459045 ** (-self.lambtha) *
-                (self.lambtha ** k) / factorial)
+        return (math.e ** (-self.lambtha) *
+                (self.lambtha ** k) /
+                math.factorial(k))
