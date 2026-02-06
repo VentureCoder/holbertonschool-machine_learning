@@ -31,15 +31,18 @@ class Poisson:
         if k < 0:
             return 0
 
-        # High-precision e
-        e = 2.71828182845904523536028747135266249775724709369995
-
         # factorial
         fact = 1
         for i in range(1, k + 1):
             fact *= i
 
-        # compute e^(-lambtha)
-        exp_term = e ** (-self.lambtha)
+        # compute e^(-lambtha) using Taylor series
+        exp_neg_l = 0
+        for i in range(0, 30):
+            term = ((-self.lambtha) ** i)
+            denom = 1
+            for j in range(1, i + 1):
+                denom *= j
+            exp_neg_l += term / denom
 
-        return exp_term * (self.lambtha ** k) / fact
+        return exp_neg_l * (self.lambtha ** k) / fact
