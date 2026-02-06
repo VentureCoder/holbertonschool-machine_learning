@@ -28,21 +28,15 @@ class Poisson:
         """
         if not isinstance(k, int):
             k = int(k)
+
         if k < 0:
             return 0
 
-        # factorial
-        fact = 1
+        factorial = 1
         for i in range(1, k + 1):
-            fact *= i
+            factorial *= i
 
-        # compute e^(-lambtha) using Taylor series
-        exp_neg_l = 0
-        for i in range(0, 30):
-            term = ((-self.lambtha) ** i)
-            denom = 1
-            for j in range(1, i + 1):
-                denom *= j
-            exp_neg_l += term / denom
+        e = 2.718281828459045
 
-        return exp_neg_l * (self.lambtha ** k) / fact
+        return (e ** (-self.lambtha) *
+                (self.lambtha ** k) / factorial)
