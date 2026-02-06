@@ -40,3 +40,19 @@ class Poisson:
 
         return (e ** (-self.lambtha) *
                 (self.lambtha ** k) / factorial)
+
+    def cdf(self, k):
+        """
+        Calculates the CDF value for k successes
+        """
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 0:
+            return 0
+
+        cdf_val = 0
+        for i in range(0, k + 1):
+            cdf_val += self.pmf(i)
+
+        return cdf_val
