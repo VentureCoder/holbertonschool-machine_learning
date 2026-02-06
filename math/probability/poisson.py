@@ -3,8 +3,6 @@
 Poisson distribution class
 """
 
-import math
-
 
 class Poisson:
     """Class representing a Poisson distribution"""
@@ -34,6 +32,11 @@ class Poisson:
         if k < 0:
             return 0
 
-        return (math.e ** (-self.lambtha) *
-                (self.lambtha ** k) /
-                math.factorial(k))
+        e = 2.7182818284590452353602874713527
+
+        factorial = 1
+        for i in range(1, k + 1):
+            factorial *= i
+
+        return (e ** (-self.lambtha) *
+                (self.lambtha ** k) / factorial)
