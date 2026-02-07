@@ -26,15 +26,38 @@ class Binomial:
                 raise ValueError("data must contain multiple values")
 
             mean = sum(data) / len(data)
-
-            # Initial estimate of p
             p = mean / max(data)
-
-            # Estimate n and round
             n = round(mean / p)
-
-            # Recalculate p
             p = mean / n
 
             self.n = int(n)
             self.p = float(p)
+
+    def pmf(self, k):
+        """
+        Calculates the PMF for k successes
+        """
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 0 or k > self.n:
+            return 0
+
+        n = self.n
+        p = self.p
+
+        fact_n = 1
+        for i in range(1, n + 1):
+            fact_n *= i
+
+        fact_k = 1
+        for i in range(1, k + 1):
+            fact_k *= i
+
+        fact_nk = 1
+        for i in range(1, n - k + 1):
+            fact_nk *= i
+
+        comb = fact_n / (fact_k * fact_nk)
+
+        return comb * (p ** k) * ((1 - p) ** (n - k))
