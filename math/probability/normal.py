@@ -29,45 +29,36 @@ class Normal:
             self.mean = float(mean)
             self.stddev = float(var ** 0.5)
 
-    def z_score(self, x):
-        """
-        Calculates the z-score of a given x-value
-        """
-        return (x - self.mean) / self.stddev
-
-    def x_value(self, z):
-        """
-        Calculates the x-value of a given z-score
-        """
-        return z * self.stddev + self.mean
-
     def pdf(self, x):
         """
-        Calculates the PDF value for a given x-value
+        Calculates the PDF value for x
         """
-        pi = 3.141592653589793
-        coef = 1 / (self.stddev * (2 * pi) ** 0.5)
-        exp = -0.5 * ((x - self.mean) / self.stddev) ** 2
-        return coef * (2.718281828459045 ** exp)
+        pi = 3.1415926536
+        e = 2.7182818285
+        z = (x - self.mean) / self.stddev
+        return (1 / (self.stddev * (2 * pi) ** 0.5)) * e ** (-0.5 * z ** 2)
 
     def cdf(self, x):
         """
-        Calculates the CDF value for a given x-value
+        Calculates the CDF value for x
         """
         z = (x - self.mean) / (self.stddev * 2 ** 0.5)
 
-        # Abramowitz and Stegun approximation of erf
-        t = 1 / (1 + 0.3275911 * abs(z))
-        a1 = 0.254829592
-        a2 = -0.284496736
-        a3 = 1.421413741
-        a4 = -1.453152027
-        a5 = 1.061405429
+        # Approximate erf(z) using Taylor series
+        erf = 0
+        pi = 3.1415926536
 
-        erf = 1 - (((((a5 * t + a4) * t + a3) * t + a2) * t + a1)
-                   * t * (2.718281828459045 ** (-z * z)))
+        for n in range(10):
+            num = (-1) ** n * z ** (2 * n + 1)
+            den = (self._factorial(n) * (2 * n + 1))
+            erf += num / den
 
-        if z < 0:
-            erf = -erf
-
+        erf *= 2 / pi ** 0.5
         return 0.5 * (1 + erf)
+
+    def _factorial(self, n):
+        """Computes factorial of n"""
+        fact = 1
+        for i in range(1, n + 1):
+            fact *= i
+        return fact
