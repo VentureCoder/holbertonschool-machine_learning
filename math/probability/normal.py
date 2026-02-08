@@ -7,6 +7,9 @@ Normal distribution
 class Normal:
     """Normal distribution class"""
 
+    pi = 3.1415926536
+    e = 2.7182818285
+
     def __init__(self, data=None, mean=0., stddev=1.):
         """Class constructor"""
         if data is None:
@@ -15,8 +18,11 @@ class Normal:
             self.mean = float(mean)
             self.stddev = float(stddev)
         else:
-            if not isinstance(data, list) or len(data) < 2:
-                raise ValueError("data must be a list with multiple values")
+            if not isinstance(data, list):
+                raise TypeError("data must be a list")
+            if len(data) < 2:
+                raise ValueError("data must contain multiple values")
+
             self.mean = sum(data) / len(data)
 
             var = 0
@@ -28,20 +34,14 @@ class Normal:
         """
         Calculates the PDF value for x
         """
-        pi = 3.1415926536
-        e = 2.7182818285
-
-        coef = 1 / (self.stddev * ((2 * pi) ** 0.5))
+        coef = 1 / (self.stddev * ((2 * self.pi) ** 0.5))
         exponent = -((x - self.mean) ** 2) / (2 * (self.stddev ** 2))
-
-        return coef * (e ** exponent)
+        return coef * (self.e ** exponent)
 
     def cdf(self, x):
         """
         Calculates the CDF value for x
         """
-        pi = 3.1415926536
-
         z = (x - self.mean) / (self.stddev * (2 ** 0.5))
 
         erf = 0
@@ -52,6 +52,6 @@ class Normal:
 
             erf += ((-1) ** n) * (z ** (2 * n + 1)) / (fact * (2 * n + 1))
 
-        erf *= (2 / (pi ** 0.5))
+        erf *= (2 / (self.pi ** 0.5))
 
         return 0.5 * (1 + erf)
