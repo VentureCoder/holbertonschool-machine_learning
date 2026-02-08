@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""
-Poisson distribution
-"""
+"""Poisson distribution"""
 
 
 class Poisson:
-    """Poisson distribution class"""
+    """Poisson class"""
+
+    e = 2.7182818285
 
     def __init__(self, data=None, lambtha=1.):
         """Class constructor"""
@@ -14,48 +14,37 @@ class Poisson:
                 raise ValueError("lambtha must be a positive value")
             self.lambtha = float(lambtha)
         else:
-            if not isinstance(data, list) or len(data) < 2:
-                raise ValueError("data must be a list with multiple values")
-            self.lambtha = float(sum(data) / len(data))
+            if not isinstance(data, list):
+                raise TypeError("data must be a list")
+            if len(data) < 2:
+                raise ValueError("data must contain multiple values")
+            self.lambtha = sum(data) / len(data)
 
     def pmf(self, k):
-        """
-        Calculates the PMF value for k
-        """
+        """Calculates the PMF value for k"""
         if not isinstance(k, int):
             k = int(k)
-
         if k < 0:
             return 0
 
-        # factorial
-        fact = 1
+        first_nom = pow(self.e, -self.lambtha)
+        second_nom = pow(self.lambtha, k)
+
+        denominator = 1
         for i in range(1, k + 1):
-            fact *= i
+            denominator *= i
 
-        e = 2.7182818285
-
-        return (e ** (-self.lambtha)) * (self.lambtha ** k) / fact
+        return (first_nom * second_nom) / denominator
 
     def cdf(self, k):
-        """
-        Calculates the CDF value for k
-        """
+        """Calculates the CDF value for k"""
         if not isinstance(k, int):
             k = int(k)
-
         if k < 0:
             return 0
 
-        cdf = 0
-        for i in range(0, k + 1):
-            # factorial for i
-            fact = 1
-            for j in range(1, i + 1):
-                fact *= j
+        cdf_value = 0
+        for i in range(k + 1):
+            cdf_value += self.pmf(i)
 
-            e = 2.7182818285
-            pmf_i = (e ** (-self.lambtha)) * (self.lambtha ** i) / fact
-            cdf += pmf_i
-
-        return cdf
+        return cdf_value
