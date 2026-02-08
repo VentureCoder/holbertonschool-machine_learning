@@ -29,13 +29,10 @@ class Poisson:
             return 0
 
         # factorial
-        factorial = 1
+        fact = 1
         for i in range(1, k + 1):
-            factorial *= i
+            fact *= i
 
-        # approximate e using Euler's number
-        e = 2.718281828459045
+        e = 2.7182818285
 
-        return (e ** (-self.lambtha) *
-                (self.lambtha ** k) /
-                factorial)
+        return (e ** (-self.lambtha)) * (self.lambtha ** k) / fact
