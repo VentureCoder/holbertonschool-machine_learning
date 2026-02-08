@@ -1,10 +1,25 @@
-# Probability
+# Bayesian Probability
 
-This project covers probability distributions used in machine learning and data science.
+This project introduces Bayesian probability concepts using Python and NumPy.
 
-Topics include:
-- Poisson distribution
-- Distribution parameter estimation
-- Probability mass functions
+## Topics Covered
 
-All classes and functions are implemented from scratch in Python.
+- Likelihood for binomial distributions
+- Bayesian modeling of real-world experiments
+- Validation and error handling for statistical inputs
+
+## Learning Objectives
+
+- Understand likelihood as a measure of how well a probability model explains observed data
+- Implement statistical formulas using NumPy
+- Apply binomial distributions in real-world scenarios (e.g., medical trials)
+
+## Requirements
+
+- Python 3
+- NumPy
+- pycodestyle
+
+## Files
+
+- `0-likelihood.py`: Computes likelihood values for hypothetical probabilities
