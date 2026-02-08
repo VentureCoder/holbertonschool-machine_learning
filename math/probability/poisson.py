@@ -36,3 +36,26 @@ class Poisson:
         e = 2.7182818285
 
         return (e ** (-self.lambtha)) * (self.lambtha ** k) / fact
+
+    def cdf(self, k):
+        """
+        Calculates the CDF value for k
+        """
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 0:
+            return 0
+
+        cdf = 0
+        for i in range(0, k + 1):
+            # factorial for i
+            fact = 1
+            for j in range(1, i + 1):
+                fact *= j
+
+            e = 2.7182818285
+            pmf_i = (e ** (-self.lambtha)) * (self.lambtha ** i) / fact
+            cdf += pmf_i
+
+        return cdf
