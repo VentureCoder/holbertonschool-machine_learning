@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 """
-Binomial distribution class
+Binomial distribution
 """
 
 
 class Binomial:
-    """Class representing a Binomial distribution"""
+    """Binomial distribution class"""
 
     def __init__(self, data=None, n=1, p=0.5):
-        """
-        Initializes the Binomial distribution
-        """
+        """Class constructor"""
         if data is None:
             if n <= 0:
                 raise ValueError("n must be a positive value")
             if p <= 0 or p >= 1:
                 raise ValueError("p must be greater than 0 and less than 1")
-
             self.n = int(n)
             self.p = float(p)
         else:
@@ -26,57 +23,20 @@ class Binomial:
                 raise ValueError("data must contain multiple values")
 
             mean = sum(data) / len(data)
-            p = mean / max(data)
+
+            var = 0
+            for x in data:
+                var += (x - mean) ** 2
+            var /= len(data)
+
+            # Estimate p first
+            p = 1 - (var / mean)
+
+            # Estimate n, then round
             n = round(mean / p)
+
+            # Recalculate p using rounded n
             p = mean / n
 
             self.n = int(n)
             self.p = float(p)
-
-    def pmf(self, k):
-        """
-        Calculates the PMF for k successes
-        """
-        if not isinstance(k, int):
-            k = int(k)
-
-        if k < 0 or k > self.n:
-            return 0
-
-        n = self.n
-        p = self.p
-
-        fact_n = 1
-        for i in range(1, n + 1):
-            fact_n *= i
-
-        fact_k = 1
-        for i in range(1, k + 1):
-            fact_k *= i
-
-        fact_nk = 1
-        for i in range(1, n - k + 1):
-            fact_nk *= i
-
-        comb = fact_n / (fact_k * fact_nk)
-
-        return comb * (p ** k) * ((1 - p) ** (n - k))
-
-    def cdf(self, k):
-        """
-        Calculates the CDF for k successes
-        """
-        if not isinstance(k, int):
-            k = int(k)
-
-        if k < 0:
-            return 0
-
-        if k > self.n:
-            k = self.n
-
-        cdf = 0
-        for i in range(0, k + 1):
-            cdf += self.pmf(i)
-
-        return cdf
