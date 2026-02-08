@@ -1,30 +1,27 @@
 #!/usr/bin/env python3
 """
-Poisson distribution class
+Poisson distribution
 """
+import math
 
 
 class Poisson:
-    """Class representing a Poisson distribution"""
+    """Poisson distribution class"""
 
     def __init__(self, data=None, lambtha=1.):
-        """
-        Initializes the Poisson distribution
-        """
+        """Class constructor"""
         if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
             self.lambtha = float(lambtha)
         else:
-            if not isinstance(data, list):
-                raise TypeError("data must be a list")
-            if len(data) < 2:
-                raise ValueError("data must contain multiple values")
+            if not isinstance(data, list) or len(data) < 2:
+                raise ValueError("data must be a list with multiple values")
             self.lambtha = float(sum(data) / len(data))
 
     def pmf(self, k):
         """
-        Calculates the PMF value for k successes
+        Calculates the PMF value for k
         """
         if not isinstance(k, int):
             k = int(k)
@@ -32,27 +29,6 @@ class Poisson:
         if k < 0:
             return 0
 
-        factorial = 1
-        for i in range(1, k + 1):
-            factorial *= i
-
-        e = 2.718281828459045
-
-        return (e ** (-self.lambtha) *
-                (self.lambtha ** k) / factorial)
-
-    def cdf(self, k):
-        """
-        Calculates the CDF value for k successes
-        """
-        if not isinstance(k, int):
-            k = int(k)
-
-        if k < 0:
-            return 0
-
-        cdf_val = 0
-        for i in range(0, k + 1):
-            cdf_val += self.pmf(i)
-
-        return cdf_val
+        return (math.exp(-self.lambtha) *
+                (self.lambtha ** k) /
+                math.factorial(k))
