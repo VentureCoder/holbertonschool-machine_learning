@@ -24,6 +24,18 @@ class Normal:
                 var += (x - self.mean) ** 2
             self.stddev = (var / len(data)) ** 0.5
 
+    def pdf(self, x):
+        """
+        Calculates the PDF value for x
+        """
+        pi = 3.1415926536
+        e = 2.7182818285
+
+        coef = 1 / (self.stddev * ((2 * pi) ** 0.5))
+        exponent = -((x - self.mean) ** 2) / (2 * (self.stddev ** 2))
+
+        return coef * (e ** exponent)
+
     def cdf(self, x):
         """
         Calculates the CDF value for x
@@ -34,7 +46,6 @@ class Normal:
 
         erf = 0
         for n in range(50):
-            # factorial of n
             fact = 1
             for i in range(1, n + 1):
                 fact *= i
