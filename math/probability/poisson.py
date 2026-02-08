@@ -2,7 +2,6 @@
 """
 Poisson distribution
 """
-import math
 
 
 class Poisson:
@@ -29,6 +28,14 @@ class Poisson:
         if k < 0:
             return 0
 
-        return (math.exp(-self.lambtha) *
+        # factorial
+        factorial = 1
+        for i in range(1, k + 1):
+            factorial *= i
+
+        # approximate e using Euler's number
+        e = 2.718281828459045
+
+        return (e ** (-self.lambtha) *
                 (self.lambtha ** k) /
-                math.factorial(k))
+                factorial)
