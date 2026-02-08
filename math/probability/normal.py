@@ -18,6 +18,7 @@ class Normal:
             if not isinstance(data, list) or len(data) < 2:
                 raise ValueError("data must be a list with multiple values")
             self.mean = sum(data) / len(data)
+
             var = 0
             for x in data:
                 var += (x - self.mean) ** 2
@@ -33,7 +34,7 @@ class Normal:
 
         erf = 0
         for n in range(50):
-            # factorial
+            # factorial of n
             fact = 1
             for i in range(1, n + 1):
                 fact *= i
