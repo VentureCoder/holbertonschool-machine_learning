@@ -36,11 +36,16 @@ class Normal:
 
     def pdf(self, x):
         """Calculates the PDF"""
-        return (1 / (self.stddev * (2 * pi) ** (1 / 2))) * e ** (-(1 / 2) * (
-            ((x - self.mean) / self.stddev) ** 2))
+        return (1 / (self.stddev * (2 * pi) ** (1 / 2))) * e ** (
+            -(1 / 2) * (((x - self.mean) / self.stddev) ** 2)
+        )
 
     def cdf(self, x):
         """Calculates the CDF"""
         y = (x - self.mean) / (self.stddev * 2 ** (1 / 2))
-        return 1 / 2 * (1 + (2 / pi ** (1 / 2) * (
-            y - (y ** 3 / 3) + (y ** 5 / 10) - (y ** 7 / 42) + (y ** 9 / 216))))
+        return 1 / 2 * (
+            1 + (2 / pi ** (1 / 2)) * (
+                y - (y ** 3 / 3) + (y ** 5 / 10)
+                - (y ** 7 / 42) + (y ** 9 / 216)
+            )
+        )
