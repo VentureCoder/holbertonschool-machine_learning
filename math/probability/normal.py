@@ -5,53 +5,41 @@ Normal distribution
 
 
 class Normal:
-    """Normal distribution class"""
-
-    pi = 3.1415926536
-    e = 2.7182818285
-
+    """Class Normal"""
     def __init__(self, data=None, mean=0., stddev=1.):
         """Class constructor"""
         if data is None:
             if stddev <= 0:
                 raise ValueError("stddev must be a positive value")
-            self.mean = float(mean)
             self.stddev = float(stddev)
+            self.mean = float(mean)
         else:
             if not isinstance(data, list):
                 raise TypeError("data must be a list")
-            if len(data) < 2:
+            elif len(data) < 2:
                 raise ValueError("data must contain multiple values")
-
             self.mean = sum(data) / len(data)
-
-            var = 0
+            self.stddev = 0
             for x in data:
-                var += (x - self.mean) ** 2
-            self.stddev = (var / len(data)) ** 0.5
+                self.stddev += (x - self.mean) ** 2
+            self.stddev = (self.stddev / len(data)) ** (1/2)
+
+    def z_score(self, x):
+        """Calculates the z-score of a given x-value"""
+        return (x - self.mean) / self.stddev
+
+    def x_value(self, z):
+        """Calculates the x-value of a given z-score"""
+        return z * self.stddev + self.mean
 
     def pdf(self, x):
-        """
-        Calculates the PDF value for x
-        """
-        coef = 1 / (self.stddev * ((2 * self.pi) ** 0.5))
-        exponent = -((x - self.mean) ** 2) / (2 * (self.stddev ** 2))
-        return coef * (self.e ** exponent)
+        """Calculates the PDF"""
+        return (1 / (self.stddev * (2 * pi) ** (1 / 2))) * e ** (-(1 / 2) * ((
+            x - self.mean) / self.stddev) ** 2)
 
     def cdf(self, x):
-        """
-        Calculates the CDF value for x
-        """
-        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
+        """Calculates the CDF"""
+        y = (x - self.mean) / (self.stddev * 2 ** (1 / 2))
+        return 1 / 2 * (1 + (2 / pi ** (1 / 2) * (y - (y ** 3 / 3) + (
+            y ** 5 / 10) - (y ** 7 / 42) + (y ** 9 / 216)))) 
 
-        erf = 0
-        for n in range(50):
-            fact = 1
-            for i in range(1, n + 1):
-                fact *= i
-
-            erf += ((-1) ** n) * (z ** (2 * n + 1)) / (fact * (2 * n + 1))
-
-        erf *= (2 / (self.pi ** 0.5))
-
-        return 0.5 * (1 + erf)
