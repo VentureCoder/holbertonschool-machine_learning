@@ -29,14 +29,38 @@ class Binomial:
                 var += (x - mean) ** 2
             var /= len(data)
 
-            # Estimate p first
             p = 1 - (var / mean)
-
-            # Estimate n, then round
             n = round(mean / p)
-
-            # Recalculate p using rounded n
             p = mean / n
 
             self.n = int(n)
             self.p = float(p)
+
+    def pmf(self, k):
+        """
+        Calculates the PMF value for k
+        """
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 0 or k > self.n:
+            return 0
+
+        # factorial n
+        fact_n = 1
+        for i in range(1, self.n + 1):
+            fact_n *= i
+
+        # factorial k
+        fact_k = 1
+        for i in range(1, k + 1):
+            fact_k *= i
+
+        # factorial (n - k)
+        fact_nk = 1
+        for i in range(1, self.n - k + 1):
+            fact_nk *= i
+
+        comb = fact_n / (fact_k * fact_nk)
+
+        return comb * (self.p ** k) * ((1 - self.p) ** (self.n - k))
