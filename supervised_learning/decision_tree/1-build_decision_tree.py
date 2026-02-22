@@ -1,30 +1,16 @@
 #!/usr/bin/env python3
 """
-Decision tree module.
-
-This module defines the Node, Leaf, and Decision_Tree classes and provides
-methods to compute properties such as tree depth and number of nodes.
+Build a decision tree.
 """
-
 import numpy as np
 
 
 class Node:
-    """Class representing an internal node in a decision tree."""
+    """Class representing an internal node of a decision tree"""
 
     def __init__(self, feature=None, threshold=None, left_child=None,
                  right_child=None, is_root=False, depth=0):
-        """
-        Initialize a Node.
-
-        Args:
-            feature (int): Feature index used for splitting.
-            threshold (float): Threshold value for the split.
-            left_child (Node): Left child node.
-            right_child (Node): Right child node.
-            is_root (bool): True if this node is the root.
-            depth (int): Depth of this node in the tree.
-        """
+        """Initializes a node"""
         self.feature = feature
         self.threshold = threshold
         self.left_child = left_child
@@ -34,72 +20,43 @@ class Node:
         self.sub_population = None
         self.depth = depth
 
+    def max_depth_below(self):
+        """Calculates the max depth below the current node"""
+        return max(self.left_child.max_depth_below(),
+                   self.right_child.max_depth_below())
+
     def count_nodes_below(self, only_leaves=False):
-        """
-        Count nodes below this node.
-
-        Args:
-            only_leaves (bool): If True, count only leaf nodes.
-
-        Returns:
-            int: Number of nodes in the subtree.
-        """
-        left_count = self.left_child.count_nodes_below(
-            only_leaves=only_leaves
-        )
-        right_count = self.right_child.count_nodes_below(
-            only_leaves=only_leaves
-        )
-
-        if only_leaves:
-            return left_count + right_count
-        return 1 + left_count + right_count
+        """Counts the number of nodes below the current node"""
+        return (self.left_child.count_nodes_below(only_leaves=only_leaves) +
+                self.right_child.count_nodes_below(only_leaves=only_leaves) +
+                (0 if only_leaves else 1))
 
 
 class Leaf(Node):
-    """Class representing a leaf node in a decision tree."""
+    """Class representing a leaf of a decision tree"""
 
     def __init__(self, value, depth=None):
-        """
-        Initialize a Leaf.
-
-        Args:
-            value: Predicted value at the leaf.
-            depth (int): Depth of this leaf in the tree.
-        """
+        """Initializes a leaf"""
         super().__init__()
         self.value = value
         self.is_leaf = True
         self.depth = depth
 
+    def max_depth_below(self):
+        """Returns the depth of the leaf"""
+        return self.depth
+
     def count_nodes_below(self, only_leaves=False):
-        """
-        Count nodes below this leaf.
-
-        Args:
-            only_leaves (bool): If True, count only leaf nodes.
-
-        Returns:
-            int: Always returns 1 for a leaf.
-        """
+        """Counts the number of nodes below the current node"""
         return 1
 
 
-class Decision_Tree:
-    """Class representing a decision tree model."""
+class Decision_Tree():
+    """Class representing a decision tree"""
 
     def __init__(self, max_depth=10, min_pop=1, seed=0,
                  split_criterion="random", root=None):
-        """
-        Initialize a Decision_Tree.
-
-        Args:
-            max_depth (int): Maximum depth allowed.
-            min_pop (int): Minimum population to split a node.
-            seed (int): Random seed.
-            split_criterion (str): Criterion for splitting.
-            root (Node): Root node of the tree.
-        """
+        """Initializes a decision tree"""
         self.rng = np.random.default_rng(seed)
         if root:
             self.root = root
@@ -112,14 +69,10 @@ class Decision_Tree:
         self.split_criterion = split_criterion
         self.predict = None
 
+    def depth(self):
+        """Calculates the depth of the decision tree"""
+        return self.root.max_depth_below()
+
     def count_nodes(self, only_leaves=False):
-        """
-        Count nodes in the decision tree.
-
-        Args:
-            only_leaves (bool): If True, count only leaf nodes.
-
-        Returns:
-            int: Number of nodes in the tree.
-        """
+        """Counts the number of nodes in the decision tree"""
         return self.root.count_nodes_below(only_leaves=only_leaves)

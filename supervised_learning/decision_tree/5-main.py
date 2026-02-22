@@ -1,9 +1,9 @@
-$ cat 1-main.py
 #!/usr/bin/env python3
 
-Node = __import__('1-build_decision_tree').Node
-Leaf = __import__('1-build_decision_tree').Leaf
-Decision_Tree = __import__('1-build_decision_tree').Decision_Tree
+Node = __import__('5-build_decision_tree').Node
+Leaf = __import__('5-build_decision_tree').Leaf
+Decision_Tree = __import__('5-build_decision_tree').Decision_Tree
+import numpy as np
 
 def example_0():
     leaf0 = Leaf(0, depth=1)
@@ -33,12 +33,21 @@ def example_1(depth):
     root.is_root = True
     return Decision_Tree(root=root)
 
-print("Number of nodes  in example 0 :" , example_0().count_nodes())
-print("Number of leaves in example 0 :" , example_0().count_nodes(only_leaves=True))
-print("Number of nodes  in example 1 :" , example_1(4).count_nodes())
-print("Number of leaves in example 1 :" , example_1(4).count_nodes(only_leaves=True))
-$ ./1-main.py
-Number of nodes  in example 0 : 5
-Number of leaves in example 0 : 3
-Number of nodes  in example 1 : 31
-Number of leaves in example 1 : 16
+def print_indicator_values_on_leaves(T,A):
+    leaves=T.get_leaves()
+    T.update_bounds()
+    for leaf in leaves :
+        leaf.update_indicator()
+    print ("values of indicators of leaves :\n",np.array([leaf.indicator(A) for leaf in leaves]))
+
+T=example_0()
+A=np.array([[1,22000],[1,44000],[0,22000],[0,44000]])
+print("\n\nFor example_0()")
+print("A=\n",A)
+print_indicator_values_on_leaves(T,A)
+
+T=example_1(4)
+A=np.array([[11.65],[6.917]])
+print("\n\nFor example_1(4)")
+print("A=\n",A)
+print_indicator_values_on_leaves(T,A)
