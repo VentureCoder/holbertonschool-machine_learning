@@ -11,23 +11,21 @@ def create_confusion_matrix(labels, logits):
     Creates a confusion matrix.
 
     Args:
-        labels (np.ndarray): one-hot encoded true labels of shape (m, classes)
-        logits (np.ndarray): one-hot encoded predicted labels of shape (m, classes)
+        labels (np.ndarray): one-hot encoded true labels
+            of shape (m, classes)
+        logits (np.ndarray): one-hot encoded predicted labels
+            of shape (m, classes)
 
     Returns:
         np.ndarray: confusion matrix of shape (classes, classes)
     """
-    # Number of classes
     classes = labels.shape[1]
 
-    # Initialize confusion matrix
     confusion = np.zeros((classes, classes))
 
-    # Convert one-hot encoded vectors to class indices
     true_labels = np.argmax(labels, axis=1)
     pred_labels = np.argmax(logits, axis=1)
 
-    # Fill confusion matrix
     for t, p in zip(true_labels, pred_labels):
         confusion[t, p] += 1
 
