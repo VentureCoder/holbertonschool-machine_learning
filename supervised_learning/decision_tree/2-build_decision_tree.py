@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
 Decision tree printing module.
-
-This module defines Node, Leaf, and Decision_Tree classes and implements
-string representations to display the structure of a decision tree.
 """
 
 import numpy as np
