@@ -34,20 +34,26 @@ class Node:
         self.sub_population = None
         self.depth = depth
 
+    def _strip_arrow(self, text):
+        """Remove leading arrow from child string if present."""
+        if text.startswith("-> "):
+            return text[3:]
+        return text
+
     def left_child_add_prefix(self, text):
         """Add left child prefix to a subtree string."""
-        lines = text.split("\n")
-        new_text = "    +---> " + lines[0] + "\n"
+        lines = self._strip_arrow(text).split("\n")
+        new_text = "+---> " + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "    |      " + x + "\n"
+            new_text += "| " + x + "\n"
         return new_text.rstrip("\n")
 
     def right_child_add_prefix(self, text):
         """Add right child prefix to a subtree string."""
-        lines = text.split("\n")
-        new_text = "    +---> " + lines[0] + "\n"
+        lines = self._strip_arrow(text).split("\n")
+        new_text = "+---> " + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "           " + x + "\n"
+            new_text += "  " + x + "\n"
         return new_text.rstrip("\n")
 
     def __str__(self):
@@ -59,7 +65,7 @@ class Node:
             )
         else:
             header = (
-                f"-> node [feature={self.feature}, "
+                f"node [feature={self.feature}, "
                 f"threshold={self.threshold}]"
             )
 
@@ -90,7 +96,7 @@ class Leaf(Node):
 
     def __str__(self):
         """Return string representation of a leaf."""
-        return f"-> leaf [value={self.value}]"
+        return f"leaf [value={self.value}]"
 
 
 class Decision_Tree:
