@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
 Decision tree printing module.
+
+This module defines Node, Leaf, and Decision_Tree classes and implements
+string representations to display the structure of a decision tree.
 """
 
 import numpy as np
@@ -38,9 +41,7 @@ class Node:
         if self.is_root:
             text = f"root [feature={self.feature}, threshold={self.threshold}]"
         else:
-            text = (
-                f"node [feature={self.feature}, threshold={self.threshold}]"
-            )
+            text = f"node [feature={self.feature}, threshold={self.threshold}]"
 
         left_str = self.left_child.__str__()
         right_str = self.right_child.__str__()
