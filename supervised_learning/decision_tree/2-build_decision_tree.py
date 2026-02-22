@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Decision tree module.
+Decision tree printing module.
 
-This module defines Node, Leaf, and Decision_Tree classes and provides a
-string representation of a decision tree.
+This module defines Node, Leaf, and Decision_Tree classes and implements
+string representations to display the structure of a decision tree.
 """
 
 import numpy as np
@@ -20,10 +20,10 @@ class Node:
         Args:
             feature (int): Feature index.
             threshold (float): Threshold value.
-            left_child (Node): Left child node.
-            right_child (Node): Right child node.
-            is_root (bool): True if root node.
-            depth (int): Depth of node.
+            left_child (Node): Left child.
+            right_child (Node): Right child.
+            is_root (bool): True if node is root.
+            depth (int): Depth of the node.
         """
         self.feature = feature
         self.threshold = threshold
@@ -34,60 +34,56 @@ class Node:
         self.sub_population = None
         self.depth = depth
 
-    def _strip_arrow(self, text):
-        """Remove leading arrow from child string if present."""
-        if text.startswith("-> "):
-            return text[3:]
-        return text
-
     def left_child_add_prefix(self, text):
-        """Add left child prefix to a subtree string."""
-        lines = self._strip_arrow(text).split("\n")
-        new_text = "+---> " + lines[0] + "\n"
+        """
+        Add prefix formatting for the left child branch.
+        """
+        lines = text.split("\n")
+        new_text = "    +--->" + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "| " + x + "\n"
-        return new_text.rstrip("\n")
+            new_text += "    |   " + x + "\n"
+        return new_text
 
     def right_child_add_prefix(self, text):
-        """Add right child prefix to a subtree string."""
-        lines = self._strip_arrow(text).split("\n")
-        new_text = "+---> " + lines[0] + "\n"
+        """
+        Add prefix formatting for the right child branch.
+        """
+        lines = text.split("\n")
+        new_text = "    +--->" + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "  " + x + "\n"
-        return new_text.rstrip("\n")
+            new_text += "        " + x + "\n"
+        return new_text
 
     def __str__(self):
-        """Return a string representation of this node and its children."""
+        """
+        Return a string representation of this node and its subtree.
+        """
         if self.is_root:
-            header = (
-                f"root [feature={self.feature}, "
-                f"threshold={self.threshold}]"
-            )
+            text = f"root [feature={self.feature}, threshold={self.threshold}]"
         else:
-            header = (
-                f"node [feature={self.feature}, "
+            text = (
+                f"-> node [feature={self.feature}, "
                 f"threshold={self.threshold}]"
             )
 
-        left_str = str(self.left_child)
-        right_str = str(self.right_child)
+        left_str = self.left_child.__str__()
+        right_str = self.right_child.__str__()
 
-        text = header + "\n"
-        text += self.left_child_add_prefix(left_str) + "\n"
+        text += "\n" + self.left_child_add_prefix(left_str)
         text += self.right_child_add_prefix(right_str)
-        return text
+        return text.rstrip("\n")
 
 
 class Leaf(Node):
-    """Class representing a leaf node in a decision tree."""
+    """Class representing a leaf in a decision tree."""
 
     def __init__(self, value, depth=None):
         """
         Initialize a Leaf.
 
         Args:
-            value: Predicted value.
-            depth (int): Depth of leaf.
+            value: Leaf prediction value.
+            depth (int): Depth of the leaf.
         """
         super().__init__()
         self.value = value
@@ -96,7 +92,7 @@ class Leaf(Node):
 
     def __str__(self):
         """Return string representation of a leaf."""
-        return f"leaf [value={self.value}]"
+        return f"-> leaf [value={self.value}]"
 
 
 class Decision_Tree:
@@ -105,11 +101,11 @@ class Decision_Tree:
     def __init__(self, max_depth=10, min_pop=1, seed=0,
                  split_criterion="random", root=None):
         """
-        Initialize a Decision_Tree.
+        Initialize Decision_Tree.
 
         Args:
-            max_depth (int): Maximum depth allowed.
-            min_pop (int): Minimum population for a split.
+            max_depth (int): Max tree depth.
+            min_pop (int): Minimum population.
             seed (int): Random seed.
             split_criterion (str): Split criterion.
             root (Node): Root node.
@@ -128,4 +124,4 @@ class Decision_Tree:
 
     def __str__(self):
         """Return string representation of the decision tree."""
-        return str(self.root)
+        return self.root.__str__()
