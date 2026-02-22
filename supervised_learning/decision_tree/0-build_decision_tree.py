@@ -16,9 +16,7 @@ class Node:
         self.depth = depth
 
     def max_depth_below(self):
-        """
-        Returns the maximum depth below this node (including itself and leaves).
-        """
+        """Return the maximum depth found below this node."""
         left_depth = self.left_child.max_depth_below()
         right_depth = self.right_child.max_depth_below()
         return max(left_depth, right_depth)
