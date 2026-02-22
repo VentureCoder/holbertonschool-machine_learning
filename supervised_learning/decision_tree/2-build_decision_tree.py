@@ -37,33 +37,39 @@ class Node:
     def left_child_add_prefix(self, text):
         """Add left child prefix to a subtree string."""
         lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
+        new_text = "    +---> " + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "    |  " + x + "\n"
-        return new_text
+            new_text += "    |      " + x + "\n"
+        return new_text.rstrip("\n")
 
     def right_child_add_prefix(self, text):
         """Add right child prefix to a subtree string."""
         lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
+        new_text = "    +---> " + lines[0] + "\n"
         for x in lines[1:]:
-            new_text += "       " + x + "\n"
-        return new_text
+            new_text += "           " + x + "\n"
+        return new_text.rstrip("\n")
 
     def __str__(self):
         """Return a string representation of this node and its children."""
         if self.is_root:
-            header = f"root [feature={self.feature}, threshold={self.threshold}]"
+            header = (
+                f"root [feature={self.feature}, "
+                f"threshold={self.threshold}]"
+            )
         else:
-            header = f"-> node [feature={self.feature}, threshold={self.threshold}]"
+            header = (
+                f"-> node [feature={self.feature}, "
+                f"threshold={self.threshold}]"
+            )
 
-        left_str = self.left_child.__str__()
-        right_str = self.right_child.__str__()
+        left_str = str(self.left_child)
+        right_str = str(self.right_child)
 
         text = header + "\n"
-        text += self.left_child_add_prefix(left_str)
+        text += self.left_child_add_prefix(left_str) + "\n"
         text += self.right_child_add_prefix(right_str)
-        return text.rstrip("\n")
+        return text
 
 
 class Leaf(Node):
@@ -116,4 +122,4 @@ class Decision_Tree:
 
     def __str__(self):
         """Return string representation of the decision tree."""
-        return self.root.__str__()
+        return str(self.root)
